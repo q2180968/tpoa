@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'crispy_forms',
     'xadmin',
     'users',
-    'rbac'
+    'rbac',
+    'personal'
 ]
 
 MIDDLEWARE = [
@@ -54,6 +55,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'users.middleware.MenuMiddleware'
 ]
 
 ROOT_URLCONF = 'tpoa.urls'
@@ -133,3 +135,4 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]

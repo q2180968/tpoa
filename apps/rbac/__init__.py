@@ -1,1 +1,1 @@
-# default_app_config = 'rbac.apps.RbacConfig'
+default_app_config = 'rbac.apps.RbacConfig'
