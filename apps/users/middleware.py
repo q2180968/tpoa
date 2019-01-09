@@ -48,6 +48,13 @@ class MenuMiddleware(MiddlewareMixin):
                     top_menu.insert(0, menu)
                 permission_menu_dict[menu['id']] = menu
 
+            # 获取主菜单ID
+            top_id = top_menu[0]['id']
+            for menu in top_menu:
+                if menu['status'] == True:
+                    top_id = menu['id']
+
+            # 获取所有菜单数据
             menu_data = []
             for i in permission_menu_dict:
                 if permission_menu_dict[i]['parent']:
@@ -57,10 +64,18 @@ class MenuMiddleware(MiddlewareMixin):
                 else:
                     menu_data.append(permission_menu_dict[i])
 
-            if [menu['sub_menu'] for menu in menu_data if menu['url'] in request_url]:
-                reveal_menu = [menu['sub_menu'] for menu in menu_data if menu['url'] in request_url][0]
-            else:
-                reveal_menu = None
+            # 获取主菜单的子菜单
+            reveal_menu = []
+            for menu in menu_data:
+                if menu['id'] == top_id:
+                    reveal_menu = menu['sub_menu']
+                else:
+                    continue
+
+            # if [menu['sub_menu'] for menu in menu_data if menu['url'] in request_url]:
+            #     reveal_menu = [menu['sub_menu'] for menu in menu_data if menu['url'] in request_url][0]
+            # else:
+            #     reveal_menu = None
 
             return top_menu, reveal_menu, permission_url_list
         else:
