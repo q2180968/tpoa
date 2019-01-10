@@ -46,6 +46,9 @@ class MenuMiddleware(MiddlewareMixin):
                     menu['status'] = True
                 if menu['parent'] is None:
                     top_menu.insert(0, menu)
+                if menu['status'] == True:
+                    if menu['parent']:
+                        permission_menu_dict[menu['parent']]['status'] = True
                 permission_menu_dict[menu['id']] = menu
 
             # 获取主菜单ID
@@ -69,8 +72,6 @@ class MenuMiddleware(MiddlewareMixin):
             for menu in menu_data:
                 if menu['id'] == top_id:
                     reveal_menu = menu['sub_menu']
-                else:
-                    continue
 
             # if [menu['sub_menu'] for menu in menu_data if menu['url'] in request_url]:
             #     reveal_menu = [menu['sub_menu'] for menu in menu_data if menu['url'] in request_url][0]
