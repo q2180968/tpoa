@@ -29,13 +29,14 @@
                             <ul class="pagination pagination-sm no-margin pull-right">
                                 <div class="btn-group pull-left">
                                     <button type="button" id="btnCreate" class="btn btn-default">
-                                        <i class="glyphicon glyphicon-plus"></i>新增
+                                        <i class="glyphicon glyphicon-plus"></i><a style="color: black"
+                                                                                   href="{% url 'system:structure_add' %}">新增</a>
                                     </button>
 
                                 </div>
                                 <div class="btn-group pull-left">&nbsp;</div>
                                 <div class="btn-group pull-left">
-                                    <button type="button" id="btnDelete" class="btn btn-default">
+                                    <button type="button" id="btnDelete_select" class="btn btn-default">
                                         <i class="glyphicon glyphicon-trash"></i>删除
                                     </button>
                                 </div>
@@ -80,16 +81,20 @@
                                         <tbody>
                                         {% for structure in all_structure.object_list %}
                                             <tr role="row" class="odd">
-                                                <td width="10px" class="sorting_1"><input type="checkbox"></td>
+                                                <td width="10px" class="sorting_1"><input type="checkbox"
+                                                                                          value="{{ structure.id }}">
+                                                </td>
                                                 <td class="sorting_1">{{ structure.title }}</td>
                                                 <td>{{ structure.get_type_display }}</td>
                                                 <td>{{ structure.parent.title }}</td>
-                                                <td>
+                                                <td><a href="{% url 'system:structure_edit' %}?s_id={{ structure.id }}"
+                                                       style="color:black">
                                                     <button title="详情-编辑"><i
                                                             class="glyphicon glyphicon-pencil"></i></button>
+                                                </a>
                                                     <button title="关联用户"><i
                                                             class="glyphicon glyphicon-user"></i></button>
-                                                    <button title="删除"><i
+                                                    <button title="删除" class="btndelete_by_id"><i
                                                             class="glyphicon glyphicon-trash"></i></button>
                                                 </td>
                                             </tr>
@@ -148,4 +153,20 @@
         </div>
     </section>
 
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript">
+        $(function () {
+            $('.btndelete_by_id').each(function () {
+                $(this).click(function () {
+                    var id = $(this).parent().parent().children().first().children().first().val()
+                    delete_struct(id)
+                })
+            })
+            function delete_struct(id) {
+                alert(id)
+            }
+        })
+    </script>
 {% endblock %}
