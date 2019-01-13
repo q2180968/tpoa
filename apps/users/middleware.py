@@ -52,10 +52,13 @@ class MenuMiddleware(MiddlewareMixin):
                 permission_menu_dict[menu['id']] = menu
 
             # 获取主菜单ID
-            top_id = top_menu[0]['id']
-            for menu in top_menu:
-                if menu['status'] == True:
-                    top_id = menu['id']
+            try:
+                top_id = top_menu[0]['id']
+                for menu in top_menu:
+                    if menu['status'] == True:
+                        top_id = menu['id']
+            except:
+                top_id = 0
 
             # 获取所有菜单数据
             menu_data = []

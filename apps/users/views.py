@@ -1,4 +1,5 @@
 from django.shortcuts import render, HttpResponseRedirect
+from django.http import JsonResponse
 from django.views.generic.base import View
 from users.models import Structure
 from pure_pagination import Paginator, EmptyPage, PageNotAnInteger
@@ -66,8 +67,12 @@ class StructureEditView(View):
         all_structure = Structure.objects.all()
         s_id = request.GET.get('s_id')
         structure = Structure.objects.get(id=s_id)
+        try:
+            parent = structure.parent.id
+        except:
+            parent = None
         s_form = StructureForm(
-            {'title': structure.title, 'type': structure.type, 'parent': structure.parent.id})
+            {'title': structure.title, 'type': structure.type, 'parent': parent})
         types = Structure.type_choices
         return render(request, 'system/structure_edit.html',
                       {'all_structure': all_structure, 's_form': s_form, 'types': types, 'id': s_id})
@@ -92,3 +97,15 @@ class StructureEditView(View):
             types = Structure.type_choices
             return render(request, 'system/structure_edit.html.html',
                           {'s_form': structure_form, 'all_structure': all_structure, 'types': types})
+
+
+class StructureDeleteView(View):
+    def post(self, request):
+        id = request.POST.get('id')
+        try:
+            structure = Structure.objects.get(id=id)
+            structure.delete()
+            status = 'success'
+        except:
+            status = 'fail'
+        return JsonResponse({'status': status})

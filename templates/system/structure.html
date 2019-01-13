@@ -165,7 +165,19 @@
                 })
             })
             function delete_struct(id) {
-                alert(id)
+                $.ajax({
+                    type: "POST",
+                    url: "{% url 'system:structure_delete' %}",
+                    data: {csrfmiddlewaretoken: '{{ csrf_token }}', 'id': id},
+                    success: function (msg) {
+                        if (msg.status == 'success') {
+                            alert("删除成功");
+                            window.location.reload()
+                        } else if (msg.status == 'fail') {
+                            alert('删除出错!!!')
+                        }
+                    }
+                });
             }
         })
     </script>
