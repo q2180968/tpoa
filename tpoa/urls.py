@@ -24,5 +24,6 @@ urlpatterns = [
     url(r'^xadmin/', xadmin.site.urls),
     url(r'^$', IndexView.as_view(), name='index'),
     url(r'^personal/', include('personal.urls', namespace='personal')),
-    url(r'^system/', include('users.urls', namespace='system')),
+    url(r'^system/basic', include('users.urls', namespace='system')),
+    url(r'^system/rbac', include('rbac.urls', namespace='rbac')),
 ]

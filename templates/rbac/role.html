@@ -6,12 +6,12 @@
     <section class="content-header">
         <h1>
             系统管理
-            <small>组织架构管理</small>
+            <small>角色管理</small>
         </h1>
         <ol class="breadcrumb">
             <li><a href="{% url 'index' %}"><i class="fa fa-dashboard"></i> 主页</a></li>
             <li><a href="{% url 'system:system' %}">系统管理</a></li>
-            <li><a href="{% url 'system:structure' %}">组织机构</a></li>
+            <li><a href="{% url 'rbac:role' %}">角色管理</a></li>
         </ol>
     </section>
 {% endblock %}
@@ -64,16 +64,9 @@
                                             <th class="sorting_asc" tabindex="0" aria-controls="example2" rowspan="1"
                                                 colspan="1"
                                                 aria-sort="ascending"
-                                                aria-label="Rendering engine: activate to sort column descending">
-                                                部门名称
-                                            </th>
-                                            <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1"
-                                                colspan="1"
-                                                aria-label="Browser: activate to sort column ascending">部门类型
-                                            </th>
-                                            <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1"
-                                                colspan="1"
-                                                aria-label="Platform(s): activate to sort column ascending">上级部门
+                                                aria-label="Rendering engine: activate to sort column descending"
+                                                width="70%">
+                                                角色名称
                                             </th>
                                             <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1"
                                                 colspan="1"
@@ -82,15 +75,13 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        {% for structure in all_structure.object_list %}
+                                        {% for role in all_role.object_list %}
                                             <tr role="row" class="odd">
                                                 <td width="10px" class="sorting_1"><input name="id" type="checkbox"
-                                                                                          value="{{ structure.id }}">
+                                                                                          value="{{ role.id }}">
                                                 </td>
-                                                <td class="sorting_1">{{ structure.title }}</td>
-                                                <td>{{ structure.get_type_display }}</td>
-                                                <td>{{ structure.parent.title }}</td>
-                                                <td><a href="{% url 'system:structure_edit' %}?s_id={{ structure.id }}"
+                                                <td class="sorting_1">{{ role.title }}</td>
+                                                <td><a href="#"
                                                        style="color:black">
                                                     <button title="详情-编辑"><i
                                                             class="glyphicon glyphicon-pencil"></i></button>
@@ -109,8 +100,8 @@
                             <div class="row">
                                 <div class="col-sm-5">
                                     <div class="dataTables_info" id="example2_info" role="status" aria-live="polite">
-                                        <b> 显示 {{ all_structure.start_index }}
-                                            至 {{ all_structure.end_index }}
+                                        <b> 显示 {{ all_role.start_index }}
+                                            至 {{ all_role.end_index }}
                                             共计
                                             {{ count }} 条数据</b>
                                     </div>
@@ -118,12 +109,12 @@
                                 <div class="col-sm-7" style="text-align: center;">
                                     <div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">
                                         <ul class="pagination">
-                                            {% if all_structure.has_previous %}
+                                            {% if all_role.has_previous %}
                                                 <li class="paginate_button previous" id="example2_previous"><a
-                                                        href="?{{ all_structure.previous_page_number.querystring }}">上一页</a>
+                                                        href="?{{ all_role.previous_page_number.querystring }}">上一页</a>
                                                 </li>
                                             {% endif %}
-                                            {% for page in all_structure.pages %}
+                                            {% for page in all_role.pages %}
                                                 {% if page %}
                                                     {% ifequal page all_structure.number %}
                                                         <li class="paginate_button active"><a
@@ -139,9 +130,9 @@
                                                     </li>
                                                 {% endif %}
                                             {% endfor %}
-                                            {% if all_structure.has_next %}
+                                            {% if all_role.has_next %}
                                                 <li class="paginate_button next" id="example2_next"><a
-                                                        href="?{{ all_structure.next_page_number.querystring }}">下一页</a>
+                                                        href="?{{ all_role.next_page_number.querystring }}">下一页</a>
                                                 </li>
                                             {% endif %}
                                         </ul>

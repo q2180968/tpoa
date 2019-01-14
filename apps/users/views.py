@@ -99,13 +99,24 @@ class StructureEditView(View):
                           {'s_form': structure_form, 'all_structure': all_structure, 'types': types})
 
 
+# 删除机构
 class StructureDeleteView(View):
     def post(self, request):
-        id = request.POST.get('id')
-        try:
-            structure = Structure.objects.get(id=id)
-            structure.delete()
-            status = 'success'
-        except:
+        ids = request.POST.getlist('id')
+        if len(ids) > 1:
+            try:
+                structure = Structure.objects.filter(id__in=ids)
+                structure.delete()
+                status = 'success'
+            except:
+                status = 'fail'
+        elif len(ids) == 1:
+            try:
+                structure = Structure.objects.get(id=ids[0])
+                structure.delete()
+                status = 'success'
+            except:
+                status = 'fail'
+        else:
             status = 'fail'
         return JsonResponse({'status': status})

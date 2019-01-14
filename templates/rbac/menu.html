@@ -6,12 +6,12 @@
     <section class="content-header">
         <h1>
             系统管理
-            <small>组织架构管理</small>
+            <small>菜单管理</small>
         </h1>
         <ol class="breadcrumb">
             <li><a href="{% url 'index' %}"><i class="fa fa-dashboard"></i> 主页</a></li>
             <li><a href="{% url 'system:system' %}">系统管理</a></li>
-            <li><a href="{% url 'system:structure' %}">组织机构</a></li>
+            <li><a href="{% url 'rbac:menu' %}">菜单管理</a></li>
         </ol>
     </section>
 {% endblock %}
@@ -65,15 +65,19 @@
                                                 colspan="1"
                                                 aria-sort="ascending"
                                                 aria-label="Rendering engine: activate to sort column descending">
-                                                部门名称
+                                                菜单名称
                                             </th>
                                             <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1"
                                                 colspan="1"
-                                                aria-label="Browser: activate to sort column ascending">部门类型
+                                                aria-label="Browser: activate to sort column ascending">父菜单
                                             </th>
                                             <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1"
                                                 colspan="1"
-                                                aria-label="Platform(s): activate to sort column ascending">上级部门
+                                                aria-label="Platform(s): activate to sort column ascending">编码
+                                            </th>
+                                            <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1"
+                                                colspan="1"
+                                                aria-label="Platform(s): activate to sort column ascending">链接路径
                                             </th>
                                             <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1"
                                                 colspan="1"
@@ -82,15 +86,16 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        {% for structure in all_structure.object_list %}
+                                        {% for menu in all_menu.object_list %}
                                             <tr role="row" class="odd">
                                                 <td width="10px" class="sorting_1"><input name="id" type="checkbox"
-                                                                                          value="{{ structure.id }}">
+                                                                                          value="{{ menu.id }}">
                                                 </td>
-                                                <td class="sorting_1">{{ structure.title }}</td>
-                                                <td>{{ structure.get_type_display }}</td>
-                                                <td>{{ structure.parent.title }}</td>
-                                                <td><a href="{% url 'system:structure_edit' %}?s_id={{ structure.id }}"
+                                                <td class="sorting_1">{{ menu.title }}</td>
+                                                <td>{{ menu.parent.title }}</td>
+                                                <td>{{ menu.code }}</td>
+                                                <td>{{ menu.url }}</td>
+                                                <td><a href="#"
                                                        style="color:black">
                                                     <button title="详情-编辑"><i
                                                             class="glyphicon glyphicon-pencil"></i></button>
@@ -109,8 +114,8 @@
                             <div class="row">
                                 <div class="col-sm-5">
                                     <div class="dataTables_info" id="example2_info" role="status" aria-live="polite">
-                                        <b> 显示 {{ all_structure.start_index }}
-                                            至 {{ all_structure.end_index }}
+                                        <b> 显示 {{ all_menu.start_index }}
+                                            至 {{ all_menu.end_index }}
                                             共计
                                             {{ count }} 条数据</b>
                                     </div>
@@ -118,12 +123,12 @@
                                 <div class="col-sm-7" style="text-align: center;">
                                     <div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">
                                         <ul class="pagination">
-                                            {% if all_structure.has_previous %}
+                                            {% if all_menu.has_previous %}
                                                 <li class="paginate_button previous" id="example2_previous"><a
-                                                        href="?{{ all_structure.previous_page_number.querystring }}">上一页</a>
+                                                        href="?{{ all_menu.previous_page_number.querystring }}">上一页</a>
                                                 </li>
                                             {% endif %}
-                                            {% for page in all_structure.pages %}
+                                            {% for page in all_menu.pages %}
                                                 {% if page %}
                                                     {% ifequal page all_structure.number %}
                                                         <li class="paginate_button active"><a
@@ -139,9 +144,9 @@
                                                     </li>
                                                 {% endif %}
                                             {% endfor %}
-                                            {% if all_structure.has_next %}
+                                            {% if all_menu.has_next %}
                                                 <li class="paginate_button next" id="example2_next"><a
-                                                        href="?{{ all_structure.next_page_number.querystring }}">下一页</a>
+                                                        href="?{{ all_menu.next_page_number.querystring }}">下一页</a>
                                                 </li>
                                             {% endif %}
                                         </ul>
