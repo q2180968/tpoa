@@ -10,8 +10,8 @@
         </h1>
         <ol class="breadcrumb">
             <li><a href="{% url 'index' %}"><i class="fa fa-dashboard"></i> 主页</a></li>
-            <li><a href="{% url 'system:system' %}">系统管理</a></li>
-            <li><a href="{% url 'rbac:role' %}">角色管理</a></li>
+            <li><a href="{% url 'system' %}">系统管理</a></li>
+            <li><a href="{% url 'system_rbac:role' %}">角色管理</a></li>
         </ol>
     </section>
 {% endblock %}
@@ -28,7 +28,7 @@
                         <div class="box-tools">
                             <ul class="pagination pagination-sm no-margin pull-right">
                                 <div class="btn-group pull-left"><a style="color: black"
-                                                                    href="{% url 'system:structure_add' %}">
+                                                                    href="{% url 'system_basic:structure_add' %}">
                                     <button type="button" id="btnCreate" class="btn btn-default">
                                         <i
                                                 class="glyphicon glyphicon-plus"></i>新增
@@ -213,7 +213,7 @@
             function delete_struct(id) {
                 $.ajax({
                     type: "POST",
-                    url: "{% url 'system:structure_delete' %}",
+                    url: "{% url 'system_basic:structure_delete' %}",
                     data: {csrfmiddlewaretoken: '{{ csrf_token }}', 'id': id},
                     success: function (msg) {
                         if (msg.status == 'success') {
@@ -239,7 +239,7 @@
                     $('#btn_delete').click(function () {
                         $.ajax({
                             type: "POST",
-                            url: "{% url 'system:structure_delete' %}",
+                            url: "{% url 'system_basic:structure_delete' %}",
                             tradition: true,
                             data: $('input:checkbox:checked').serialize() + '&csrfmiddlewaretoken=' + '{{ csrf_token }}',
                             success: function (msg) {

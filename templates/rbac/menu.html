@@ -10,8 +10,8 @@
         </h1>
         <ol class="breadcrumb">
             <li><a href="{% url 'index' %}"><i class="fa fa-dashboard"></i> 主页</a></li>
-            <li><a href="{% url 'system:system' %}">系统管理</a></li>
-            <li><a href="{% url 'rbac:menu' %}">菜单管理</a></li>
+            <li><a href="{% url 'system' %}">系统管理</a></li>
+            <li><a href="{% url 'system_rbac:menu' %}">菜单管理</a></li>
         </ol>
     </section>
 {% endblock %}
@@ -23,12 +23,12 @@
             <div class="col-xs-12">
                 <div class="box">
                     <div class="box-header">
-                        <h3 class="box-title">组织机构</h3>
+                        <h3 class="box-title">菜单</h3>
 
                         <div class="box-tools">
                             <ul class="pagination pagination-sm no-margin pull-right">
                                 <div class="btn-group pull-left"><a style="color: black"
-                                                                    href="{% url 'system:structure_add' %}">
+                                                                    href="{% url 'system_rbac:menu_add' %}">
                                     <button type="button" id="btnCreate" class="btn btn-default">
                                         <i
                                                 class="glyphicon glyphicon-plus"></i>新增
@@ -95,7 +95,7 @@
                                                 <td>{{ menu.parent.title }}</td>
                                                 <td>{{ menu.code }}</td>
                                                 <td>{{ menu.url }}</td>
-                                                <td><a href="#"
+                                                <td><a href="{% url 'system_rbac:menu_edit' %}"
                                                        style="color:black">
                                                     <button title="详情-编辑"><i
                                                             class="glyphicon glyphicon-pencil"></i></button>
@@ -227,7 +227,7 @@
             function delete_struct(id) {
                 $.ajax({
                     type: "POST",
-                    url: "{% url 'system:structure_delete' %}",
+                    url: "{% url 'system_basic:structure_delete' %}",
                     data: {csrfmiddlewaretoken: '{{ csrf_token }}', 'id': id},
                     success: function (msg) {
                         if (msg.status == 'success') {
@@ -253,7 +253,7 @@
                     $('#btn_delete').click(function () {
                         $.ajax({
                             type: "POST",
-                            url: "{% url 'system:structure_delete' %}",
+                            url: "{% url 'system_basic:structure_delete' %}",
                             tradition: true,
                             data: $('input:checkbox:checked').serialize() + '&csrfmiddlewaretoken=' + '{{ csrf_token }}',
                             success: function (msg) {

@@ -17,13 +17,14 @@ from django.conf.urls import url, include
 from django.contrib import admin
 import xadmin
 from django.views.generic import TemplateView
-from users.views import IndexView
+from users.views import IndexView, SystemView
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^xadmin/', xadmin.site.urls),
     url(r'^$', IndexView.as_view(), name='index'),
     url(r'^personal/', include('personal.urls', namespace='personal')),
-    url(r'^system/basic', include('users.urls', namespace='system')),
-    url(r'^system/rbac', include('rbac.urls', namespace='rbac')),
+    url(r'^system/$', SystemView.as_view(), name='system'),
+    url(r'^system/basic/', include('users.urls', namespace='system_basic')),
+    url(r'^system/rbac/', include('rbac.urls', namespace='system_rbac')),
 ]
