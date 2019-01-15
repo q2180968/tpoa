@@ -33,12 +33,13 @@
                 <!-- /.box-header -->
                 <!-- form start -->
                 <form role="form" action="{% url 'system_rbac:menu_edit' %}" method="post">
+                    <input type="hidden" value="{{ id }}" name="id"/>
                     {% csrf_token %}
                     <div class="box-body">
                         <div class="form-group">
                             <label for="exampleInputEmail1">菜单名称</label>
                             <input type="text" class="form-control" name="title" placeholder="输入菜单名称"
-                                   value="{{ menu.title }}">
+                                   value="{{ m_form.title.value }}">
                         </div>
                         <div><strong class="errorlist">
                             {% for key,value in m_form.errors.items %}{% ifequal key 'title' %}{{ value }}
@@ -49,28 +50,33 @@
                                     style="width: 100%;"
                                     tabindex="-1" aria-hidden="true">
                                 <option selected="selected" value="">无</option>
-                                {% for menu in all_menu %}
-                                    <option value="{{ menu.id }}">{{ menu.title }}</option>
+                                {% for menu in all_menu %}{{ m_form.parent.value }}
+                                    <option {% ifequal m_form.parent.value|stringformat:'i' menu.id|stringformat:'i' %}selected="selected"{% endifequal %}
+                                            value="{{ menu.id }}">{{ menu.title }}</option>
                                 {% endfor %}
                             </select>
                         </div>
                         <div class="form-group">
-                            <input type="radio" name="is_top"/>是否首页显示
+                            <input type="checkbox" name="is_top"
+                                   {% if m_form.is_top.value %}checked="checked"{% endif %}/>是否首页显示
                         </div>
 
                         <div class="form-group">
                             <label for="exampleInputEmail1">菜单图标</label>
-                            <input type="text" class="form-control" name="icon" placeholder="输入图标">
+                            <input type="text" class="form-control" name="icon" placeholder="输入图标"
+                                   value="{{ m_form.icon.value }}">
                         </div>
 
                         <div class="form-group">
                             <label for="exampleInputEmail1">菜单编码</label>
-                            <input type="text" class="form-control" name="code" placeholder="输入编码">
+                            <input type="text" class="form-control" name="code" placeholder="输入编码"
+                                   value="{{ m_form.code.value }}">
                         </div>
 
                         <div class="form-group">
                             <label for="exampleInputEmail1">链接地址</label>
-                            <input type="text" class="form-control" name="url" placeholder="输入链接地址">
+                            <input type="text" class="form-control" name="url" placeholder="输入链接地址"
+                                   value="{{ m_form.url.value }}">
                         </div>
                     </div>
                     <!-- /.box-body -->

@@ -95,7 +95,7 @@
                                                 <td>{{ menu.parent.title }}</td>
                                                 <td>{{ menu.code }}</td>
                                                 <td>{{ menu.url }}</td>
-                                                <td><a href="{% url 'system_rbac:menu_edit' %}"
+                                                <td><a href="{% url 'system_rbac:menu_edit' %}?id={{ menu.id }}"
                                                        style="color:black">
                                                     <button title="详情-编辑"><i
                                                             class="glyphicon glyphicon-pencil"></i></button>

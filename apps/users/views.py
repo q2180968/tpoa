@@ -96,7 +96,7 @@ class StructureEditView(View):
             all_structure = Structure.objects.all()
             types = Structure.type_choices
             return render(request, 'system/structure_edit.html.html',
-                          {'s_form': structure_form, 'all_structure': all_structure, 'types': types})
+                          {'s_form': structure_form, 'all_structure': all_structure, 'types': types, 'id': s_id})
 
 
 # 删除机构
