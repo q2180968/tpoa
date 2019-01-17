@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block title %}
-    高新区OA----新增机构
+    高新区OA----角色修改
 {% endblock %}
 {% block css %}
     <style type="text/css">
@@ -19,7 +19,7 @@
         <ol class="breadcrumb">
             <li><a href="{% url 'index' %}"><i class="fa fa-dashboard"></i> 主页</a></li>
             <li><a href="{% url 'system' %}">系统管理</a></li>
-            <li><a href="{% url 'system_rbac:menu' %}">菜单管理</a></li>
+            <li><a href="{% url 'system_rbac:role' %}">角色管理</a></li>
         </ol>
     </section>
 {% endblock %}
@@ -28,13 +28,14 @@
         <div class="callout " style="margin-bottom: 0!important;">
             <div class="box box-primary">
                 <div class="box-header with-border">
-                    <h3 class="box-title">权限菜单新增</h3>
+                    <h3 class="box-title">权限菜单修改</h3>
                 </div>
                 <!-- /.box-header -->
                 <!-- form start -->
-                <form role="form" action="{% url 'system_rbac:role_add' %}" method="post">
+                <form role="form" action="{% url 'system_rbac:role_edit' %}" method="post">
                     {% csrf_token %}
                     <div class="box-body">
+                        <input type="hidden" name="id" value="{{ id }}">
                         <div class="form-group">
                             <label for="exampleInputEmail1">角色名称</label>
                             <input type="text" class="form-control" name="title" placeholder="输入角色名称"
@@ -46,10 +47,11 @@
                         <div class="form-group">
                             <label>权限列表</label>
                             {% for menu in all_menu %}
-                                <div><input {% if menu.id|stringformat:'i' in permissions %}checked="checked"{% endif %}
-                                            name='permissions'
-                                            type="checkbox"
-                                            value="{{ menu.id }}"/>{{ menu.title }}
+                                <div><input
+                                        {% if menu.id|stringformat:'i' in permissions_list %}checked="checked"{% endif %}
+                                        name='permissions'
+                                        type="checkbox"
+                                        value="{{ menu.id }}"/>{{ menu.title }}
                                 </div>
                             {% endfor %}
                             </select>

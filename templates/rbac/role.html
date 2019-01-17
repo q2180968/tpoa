@@ -28,7 +28,7 @@
                         <div class="box-tools">
                             <ul class="pagination pagination-sm no-margin pull-right">
                                 <div class="btn-group pull-left"><a style="color: black"
-                                                                    href="{% url 'system_basic:structure_add' %}">
+                                                                    href="{% url 'system_rbac:role_add' %}">
                                     <button type="button" id="btnCreate" class="btn btn-default">
                                         <i
                                                 class="glyphicon glyphicon-plus"></i>新增
@@ -81,7 +81,7 @@
                                                                                           value="{{ role.id }}">
                                                 </td>
                                                 <td class="sorting_1">{{ role.title }}</td>
-                                                <td><a href="#"
+                                                <td><a href="{% url 'system_rbac:role_edit' %}?id={{ role.id }}"
                                                        style="color:black">
                                                     <button title="详情-编辑"><i
                                                             class="glyphicon glyphicon-pencil"></i></button>
@@ -193,7 +193,7 @@
                     var title = $(this).parent().siblings('td').eq(1).html()
                     $('#modal-default').attr('class', 'modal fade in')
                     $('#modal-default').attr('style', 'display: block; padding-right: 16px;')
-                    $('#modal-default').children().children().children('div :nth-child(2)').children('center').html("确定删除机构  <b>" + title + "</b>  么？<br><p style='color:red'>注：删除机构的下属机构将一同删除，请慎重操作！</p>")
+                    $('#modal-default').children().children().children('div :nth-child(2)').children('center').html("确定删除角色  <b>" + title + "</b>  么？")
                     $('#btn_delete').click(function () {
                         //alert(id)
                         delete_struct(id)
@@ -213,7 +213,7 @@
             function delete_struct(id) {
                 $.ajax({
                     type: "POST",
-                    url: "{% url 'system_basic:structure_delete' %}",
+                    url: "{% url 'system_rbac:role_delete' %}",
                     data: {csrfmiddlewaretoken: '{{ csrf_token }}', 'id': id},
                     success: function (msg) {
                         if (msg.status == 'success') {
@@ -232,14 +232,17 @@
                 })
             });
             $('#btnDelete_select').click(function () {
-                if ($('input:checkbox:checked').length > 0) {
+                check_len = $('input:checkbox:checked').length
+                if (check_len > 0) {
                     $('#modal-default').attr('class', 'modal fade in')
                     $('#modal-default').attr('style', 'display: block; padding-right: 16px;')
-                    $('#modal-default').children().children().children('div :nth-child(2)').children('center').html("确定删除已选中的机构么？<br><p style='color:red'>注：删除机构的下属机构将一同删除，请慎重操作！</p>")
+                    $('#modal-default').children().children().children('div :nth-child(2)').children('center').html("确定删除已选中的" + check_len +
+                        "个角色么？"
+                    )
                     $('#btn_delete').click(function () {
                         $.ajax({
                             type: "POST",
-                            url: "{% url 'system_basic:structure_delete' %}",
+                            url: "{% url 'system_rbac:role_delete' %}",
                             tradition: true,
                             data: $('input:checkbox:checked').serialize() + '&csrfmiddlewaretoken=' + '{{ csrf_token }}',
                             success: function (msg) {

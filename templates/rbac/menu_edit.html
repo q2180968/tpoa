@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block title %}
-    高新区OA----新增机构
+    高新区OA----修改菜单
 {% endblock %}
 {% block css %}
     <style type="text/css">
@@ -49,10 +49,13 @@
                             <select name='parent' class="form-control select2 select2-hidden-accessible"
                                     style="width: 100%;"
                                     tabindex="-1" aria-hidden="true">
-                                <option selected="selected" value="">无</option>
+                                <option {% if m_form.parent.value %}{% else %}selected="selected"{% endif %} value="">
+                                    无
+                                </option>
                                 {% for menu in all_menu %}{{ m_form.parent.value }}
                                     <option {% ifequal m_form.parent.value|stringformat:'i' menu.id|stringformat:'i' %}selected="selected"{% endifequal %}
-                                            value="{{ menu.id }}">{{ menu.title }}</option>
+                                            value="{{ menu.id }}"
+                                            class="{{ m_form.parent.value }}">{{ menu.title }}</option>
                                 {% endfor %}
                             </select>
                         </div>
@@ -88,4 +91,12 @@
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript">
+        $(function () {
+            $('.select2').val({{ m_form.parent.value }})
+        })
+    </script>
 {% endblock %}

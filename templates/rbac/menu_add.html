@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block title %}
-    高新区OA----新增机构
+    高新区OA----新增角色
 {% endblock %}
 {% block css %}
     <style type="text/css">
@@ -19,7 +19,7 @@
         <ol class="breadcrumb">
             <li><a href="{% url 'index' %}"><i class="fa fa-dashboard"></i> 主页</a></li>
             <li><a href="{% url 'system' %}">系统管理</a></li>
-            <li><a href="{% url 'system_rbac:menu' %}">菜单管理</a></li>
+            <li><a href="{% url 'system_rbac:role' %}">角色管理</a></li>
         </ol>
     </section>
 {% endblock %}
@@ -50,7 +50,7 @@
                                     tabindex="-1" aria-hidden="true">
                                 <option selected="selected" value="">无</option>
                                 {% for menu in all_menu %}
-                                    <option {% ifequal m_form.parent.value menu.id|stringformat:'i' %}selected="selected"{% endifequal %}
+                                    <option
                                             value="{{ menu.id }}">{{ menu.title }}</option>
                                 {% endfor %}
                             </select>
@@ -87,4 +87,12 @@
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript">
+        $(function () {
+            $('.select2').val({{ m_form.parent.value }})
+        })
+    </script>
 {% endblock %}

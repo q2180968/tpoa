@@ -90,11 +90,12 @@
                                                 <td class="sorting_1">{{ structure.title }}</td>
                                                 <td>{{ structure.get_type_display }}</td>
                                                 <td>{{ structure.parent.title }}</td>
-                                                <td><a href="{% url 'system_basic:structure_edit' %}?s_id={{ structure.id }}"
+                                                <td>
+                                                    <a href="{% url 'system_basic:structure_edit' %}?s_id={{ structure.id }}"
                                                        style="color:black">
-                                                    <button title="详情-编辑"><i
-                                                            class="glyphicon glyphicon-pencil"></i></button>
-                                                </a>
+                                                        <button title="详情-编辑"><i
+                                                                class="glyphicon glyphicon-pencil"></i></button>
+                                                    </a>
                                                     <button title="关联用户" class="btnuser"><i
                                                             class="glyphicon glyphicon-user"></i></button>
                                                     <button title="删除" class="btndelete_by_id"><i
@@ -202,7 +203,7 @@
                     var title = $(this).parent().siblings('td').eq(1).html()
                     $('#modal-default').attr('class', 'modal fade in')
                     $('#modal-default').attr('style', 'display: block; padding-right: 16px;')
-                    $('#modal-default').children().children().children('div :nth-child(2)').children('center').html("确定删除机构  <b>" + title + "</b>  么？<br><p style='color:red'>注：删除机构的下属机构将一同删除，请慎重操作！</p>")
+                    $('#modal-default').children().children().children('div :nth-child(2)').children('center').html("确定删除菜单  <b>" + title + "</b>  么？<br><p style='color:red'>注：删除菜单的下属菜单将一同删除，请慎重操作！</p>")
                     $('#btn_delete').click(function () {
                         //alert(id)
                         delete_struct(id)
@@ -218,6 +219,7 @@
 
                 })
             })
+
             //删除操作
             function delete_struct(id) {
                 $.ajax({
@@ -234,12 +236,21 @@
                     }
                 });
             };
+
             //全选/全不选
+            var check = false
             $('#check_all').click(function () {
                 $('input:checkbox').each(function () {
-                    this.checked = !this.checked;
+                    if (check == false) {
+                        this.checked = true
+                    } else if (check == true) {
+                        this.checked = false
+                    }
                 })
+                check = !check
             });
+
+
             $('#btnDelete_select').click(function () {
                 if ($('input:checkbox:checked').length > 0) {
                     $('#modal-default').attr('class', 'modal fade in')

@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block title %}
-    高新区OA----机构管理
+    高新区OA----菜单管理
 {% endblock %}
 {% block map %}
     <section class="content-header">
@@ -11,7 +11,7 @@
         <ol class="breadcrumb">
             <li><a href="{% url 'index' %}"><i class="fa fa-dashboard"></i> 主页</a></li>
             <li><a href="{% url 'system' %}">系统管理</a></li>
-            <li><a href="{% url 'system_rbac:menu' %}">菜单管理</a></li>
+            <li><a href="{% url 'system_rbac:menu' %}">权限菜单管理</a></li>
         </ol>
     </section>
 {% endblock %}
@@ -227,7 +227,7 @@
             function delete_struct(id) {
                 $.ajax({
                     type: "POST",
-                    url: "{% url 'system_basic:structure_delete' %}",
+                    url: "{% url 'system_rbac:menu_delete' %}",
                     data: {csrfmiddlewaretoken: '{{ csrf_token }}', 'id': id},
                     success: function (msg) {
                         if (msg.status == 'success') {
@@ -240,20 +240,29 @@
                 });
             };
             //全选/全不选
+            var check = false
             $('#check_all').click(function () {
                 $('input:checkbox').each(function () {
-                    this.checked = !this.checked;
+                    if (check == false) {
+                        this.checked = true
+                    } else if (check == true) {
+                        this.checked = false
+                    }
                 })
+                check = !check
             });
             $('#btnDelete_select').click(function () {
-                if ($('input:checkbox:checked').length > 0) {
+                check_len = $('input:checkbox:checked').length
+                if (check_len > 0) {
                     $('#modal-default').attr('class', 'modal fade in')
                     $('#modal-default').attr('style', 'display: block; padding-right: 16px;')
-                    $('#modal-default').children().children().children('div :nth-child(2)').children('center').html("确定删除已选中的机构么？<br><p style='color:red'>注：删除机构的下属机构将一同删除，请慎重操作！</p>")
+                    $('#modal-default').children().children().children('div :nth-child(2)').children('center').html("确定删除已选中的" + check_len +
+                        "个菜单么？<br><p style='color:red'>注：删除菜单的下属菜单将一同删除，请慎重操作！</p>"
+                    )
                     $('#btn_delete').click(function () {
                         $.ajax({
                             type: "POST",
-                            url: "{% url 'system_basic:structure_delete' %}",
+                            url: "{% url 'system_rbac:menu_delete' %}",
                             tradition: true,
                             data: $('input:checkbox:checked').serialize() + '&csrfmiddlewaretoken=' + '{{ csrf_token }}',
                             success: function (msg) {

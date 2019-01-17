@@ -1,5 +1,6 @@
 from django.conf.urls import url, include
-from rbac.views import MenuView, RoleView, RoleAddView, RoleEditView, MenuAddView, MenuEditView
+from rbac.views import MenuView, RoleView, RoleAddView, RoleEditView, MenuAddView, MenuEditView, MenuDeleteView, \
+    RoleDeleteView
 
 urlpatterns = [
     url(r'menu/$', MenuView.as_view(), name='menu'),
@@ -8,4 +9,6 @@ urlpatterns = [
     url(r'menu/edit$', MenuEditView.as_view(), name='menu_edit'),
     url(r'role/add$', RoleAddView.as_view(), name='role_add'),
     url(r'role/edit$', RoleEditView.as_view(), name='role_edit'),
+    url(r'role/delete$', RoleDeleteView.as_view(), name='role_delete'),
+    url(r'menu/delete$', MenuDeleteView.as_view(), name='menu_delete'),
 ]
