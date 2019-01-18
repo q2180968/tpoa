@@ -262,6 +262,7 @@ class MenuDeleteView(View):
 class RoleDeleteView(View):
     def post(self, request):
         ids = request.POST.getlist('id')
+        return render(request, 'personal/index.html')
         if len(ids) > 1:
             try:
                 roles = Role.objects.filter(id__in=ids)
