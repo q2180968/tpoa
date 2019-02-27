@@ -157,10 +157,12 @@ class RoleEditView(View):
                            'permissions_list': permissions,
                            'id': r_id})
         role.title = title
+        role.permissions.clear()
         role.save()
         for permission in permissions:
             menu = get_object_or_404(Menu, pk=permission)
             role.permissions.add(menu)
+            role.save()
         return HttpResponseRedirect('system/rbac/role')
 
 

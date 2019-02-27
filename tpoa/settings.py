@@ -92,7 +92,7 @@ WSGI_APPLICATION = 'tpoa.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'tpoa',
+        'NAME': 'tpgwoa',
         'HOST': 'localhost',
         'USER': 'root',
         'PASSWORD': '50122294',

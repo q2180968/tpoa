@@ -14,8 +14,8 @@ xadmin.site.register(xadmin.views.BaseAdminView, BaseSetting)
 
 # 设置LOGO，尾部信息
 class GloabSetting(object):
-    site_title = '高新区OA后台管理'
-    site_footer = '@高新区OA后台管理'
+    site_title = '拓扑OA后台管理'
+    site_footer = '@拓扑OA后台管理'
     # 将菜单设置为可折叠
     menu_style = 'accordion'
 
@@ -35,7 +35,7 @@ xadmin.site.unregister(UserProfile)
 
 
 class UserProfileAdmin(object):
-    list_display = ['username']
+    list_display = ['username', 'post']
 
 
 xadmin.site.register(UserProfile, UserProfileAdmin)
@@ -53,7 +53,7 @@ xadmin.site.register(Structure, StructureAdmin)
 
 
 class PostAdmin(object):
-    pass
+    list_display = ['name', 'structure']
 
 
 xadmin.site.register(Post, PostAdmin)

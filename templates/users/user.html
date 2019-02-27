@@ -1,0 +1,287 @@
+{% extends 'base.html' %}
+{% block title %}
+    高新区OA----机构管理
+{% endblock %}
+{% block map %}
+    <section class="content-header">
+        <h1>
+            系统管理
+            <small>用户管理</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="{% url 'index' %}"><i class="fa fa-dashboard"></i> 主页</a></li>
+            <li><a href="{% url 'system' %}">系统管理</a></li>
+            <li><a href="{% url 'system_basic:user' %}">用户管理</a></li>
+        </ol>
+    </section>
+{% endblock %}
+{% block content %}
+
+    <section class="content">
+        <!-- Small boxes (Stat box) -->
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-header">
+                        <h3 class="box-title">用户管理</h3>
+
+                        <div class="box-tools">
+                            <ul class="pagination pagination-sm no-margin pull-right">
+                                <div class="btn-group pull-left"><a style="color: black"
+                                                                    href="{% url 'system_basic:user_add' %}">
+                                    <button type="button" id="btnCreate" class="btn btn-default">
+                                        <i
+                                                class="glyphicon glyphicon-plus"></i>新增
+                                    </button>
+                                </a>
+
+                                </div>
+                                <div class="btn-group pull-left">&nbsp;</div>
+                                <div class="btn-group pull-left">
+                                    <button type="button" id="btnDelete_select" class="btn btn-default">
+                                        <i class="glyphicon glyphicon-trash"></i>删除
+                                    </button>
+                                </div>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <div id="example2_wrapper" class="table table-bordered table-hover">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <table id="example2" class="table table-bordered table-hover dataTable" role="grid"
+                                           aria-describedby="example2_info">
+                                        <thead>
+                                        <tr role="row">
+                                            <th class="sorting_asc" tabindex="0" aria-controls="example2" rowspan="1"
+                                                colspan="1"
+                                                aria-sort="ascending"
+                                                aria-label="Rendering engine: activate to sort column descending">
+                                                <input type="button" id="check_all" value="选择"
+                                                       style="outline: none;border:none;background: white;"/>
+                                            </th>
+                                            <th class="sorting_asc" tabindex="0" aria-controls="example2" rowspan="1"
+                                                colspan="1"
+                                                aria-sort="ascending"
+                                                aria-label="Rendering engine: activate to sort column descending">
+                                                用户名
+                                            </th>
+                                            <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1"
+                                                colspan="1"
+                                                aria-label="Browser: activate to sort column ascending">真实姓名
+                                            </th>
+                                            <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1"
+                                                colspan="1"
+                                                aria-label="Platform(s): activate to sort column ascending">部门
+                                            </th>
+                                            <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1"
+                                                colspan="1"
+                                                aria-label="Platform(s): activate to sort column ascending">职位
+                                            </th>
+                                            <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1"
+                                                colspan="1"
+                                                aria-label="Platform(s): activate to sort column ascending">电话
+                                            </th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for user in user_list.object_list %}
+                                            <tr role="row" class="odd">
+                                                <td width="10px" class="sorting_1"><input name="id" type="checkbox"
+                                                                                          value="{{ user.id }}">
+                                                </td>
+                                                <td class="sorting_1">{{ user.username }}</td>
+                                                <td>{{ user.user_name }}</td>
+                                                <td>{{ user.post.structure }}</td>
+                                                <td>{{ user.post.name }}</td>
+                                                <td>{{ user.mobile }}</td>
+                                                <td>
+                                                    <a href="{% url 'system_basic:user_add' %}?s_id={{ user.id }}"
+                                                       style="color:black">
+                                                        <button title="详情-编辑"><i
+                                                                class="glyphicon glyphicon-pencil"></i></button>
+                                                    </a>
+                                                    <button title="关联用户" class="btnuser"><i
+                                                            class="glyphicon glyphicon-user"></i></button>
+                                                    <button title="删除" class="btndelete_by_id"><i
+                                                            class="glyphicon glyphicon-trash"></i></button>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-5">
+                                    <div class="dataTables_info" id="example2_info" role="status" aria-live="polite">
+                                        <b> 显示 {{ user_list.start_index }}
+                                            至 {{ user_list.end_index }}
+                                            共计
+                                            {{ count }} 条数据</b>
+                                    </div>
+                                </div>
+                                <div class="col-sm-7" style="text-align: center;">
+                                    <div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">
+                                        <ul class="pagination">
+                                            {% if user_list.has_previous %}
+                                                <li class="paginate_button previous" id="example2_previous"><a
+                                                        href="?{{ user_list.previous_page_number.querystring }}">上一页</a>
+                                                </li>
+                                            {% endif %}
+                                            {% for page in user_list.pages %}
+                                                {% if page %}
+                                                    {% ifequal page user_list.number %}
+                                                        <li class="paginate_button active"><a
+                                                                href="?{{ page.querystring }}">{{ page }}</a>
+                                                        </li>
+                                                    {% else %}
+                                                        <li class="paginate_button"><a
+                                                                href="?{{ page.querystring }}">{{ page }}</a>
+                                                        </li>
+                                                    {% endifequal %}
+                                                {% else %}
+                                                    <li class="paginate_button"><a>...</a>
+                                                    </li>
+                                                {% endif %}
+                                            {% endfor %}
+                                            {% if user_list.has_next %}
+                                                <li class="paginate_button next" id="example2_next"><a
+                                                        href="?{{ user_list.next_page_number.querystring }}">下一页</a>
+                                                </li>
+                                            {% endif %}
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+            </div>
+        </div>
+    </section>
+    <div class="modal fade" id="modal-default" style="display: none;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button id="x" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span></button>
+                    <h4 class="modal-title">删除确认</h4>
+                </div>
+                <div class="modal-body">
+                    <center>是否确认删除么？</center>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="btn_close" class="btn btn-default pull-left" data-dismiss="modal">关闭
+                    </button>
+                    <button type="button" id="btn_delete" class="btn btn-primary">删除</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript">
+        $(function () {
+
+            //关闭模态窗口
+            $("#x").click(function () {
+                close_model()
+            });
+            $('#btn_close').click(function () {
+                close_model()
+            })
+            //关闭模态窗口
+            function close_model() {
+                $('#modal-default').attr('class', 'modal fade')
+                $('#modal-default').attr('style', 'display: none;')
+            };
+
+            //绑定删除事件
+            $('.btndelete_by_id').each(function () {
+                $(this).click(function () {
+                    var id = $(this).parent().parent().children().first().children().first().val()
+                    var title = $(this).parent().siblings('td').eq(1).html()
+                    $('#modal-default').attr('class', 'modal fade in')
+                    $('#modal-default').attr('style', 'display: block; padding-right: 16px;')
+                    $('#modal-default').children().children().children('div :nth-child(2)').children('center').html("确定删除菜单  <b>" + title + "</b>  么？<br><p style='color:red'>注：删除菜单的下属菜单将一同删除，请慎重操作！</p>")
+                    $('#btn_delete').click(function () {
+                        //alert(id)
+                        delete_struct(id)
+                    })
+                    $('#btn_close').click(function () {
+                        $('#modal-default').attr('class', 'modal fade')
+                        $('#modal-default').attr('style', 'display: none;')
+                    });
+                    $('#x').click(function () {
+                        $('#modal-default').attr('class', 'modal fade')
+                        $('#modal-default').attr('style', 'display: none;')
+                    })
+
+                })
+            })
+
+            //删除操作
+            function delete_struct(id) {
+                $.ajax({
+                    type: "POST",
+                    url: "{% url 'system_basic:structure_delete' %}",
+                    data: {csrfmiddlewaretoken: '{{ csrf_token }}', 'id': id},
+                    success: function (msg) {
+                        if (msg.status == 'success') {
+                            alert("删除成功");
+                            window.location.reload()
+                        } else if (msg.status == 'fail') {
+                            alert('删除出错!!!')
+                        }
+                    }
+                });
+            };
+
+            //全选/全不选
+            var check = false
+            $('#check_all').click(function () {
+                $('input:checkbox').each(function () {
+                    if (check == false) {
+                        this.checked = true
+                    } else if (check == true) {
+                        this.checked = false
+                    }
+                })
+                check = !check
+            });
+
+
+            $('#btnDelete_select').click(function () {
+                if ($('input:checkbox:checked').length > 0) {
+                    $('#modal-default').attr('class', 'modal fade in')
+                    $('#modal-default').attr('style', 'display: block; padding-right: 16px;')
+                    $('#modal-default').children().children().children('div :nth-child(2)').children('center').html("确定删除已选中的机构么？<br><p style='color:red'>注：删除机构的下属机构将一同删除，请慎重操作！</p>")
+                    $('#btn_delete').click(function () {
+                        $.ajax({
+                            type: "POST",
+                            url: "{% url 'system_basic:structure_delete' %}",
+                            tradition: true,
+                            data: $('input:checkbox:checked').serialize() + '&csrfmiddlewaretoken=' + '{{ csrf_token }}',
+                            success: function (msg) {
+                                if (msg.status == 'success') {
+                                    alert("删除成功");
+                                    window.location.reload()
+                                } else if (msg.status == 'fail') {
+                                    alert('删除出错!!!')
+                                }
+                            }
+                        })
+                    })
+                } else {
+                    alert('未选中任何数据！！！')
+                }
+            })
+        })
+    </script>
+{% endblock %}

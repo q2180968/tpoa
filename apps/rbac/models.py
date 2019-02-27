@@ -12,6 +12,7 @@ class Menu(models.Model):
     icon = models.CharField(max_length=50, null=True, blank=True, verbose_name="图标")
     code = models.CharField(max_length=50, null=True, blank=True, verbose_name="编码")
     url = models.CharField(max_length=120, unique=True, null=True, blank=True, verbose_name="链接路径")
+    is_show = models.BooleanField(default=0)
 
     def __str__(self):
         title_list = [self.title]

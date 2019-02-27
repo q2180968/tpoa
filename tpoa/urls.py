@@ -18,7 +18,7 @@ from django.contrib import admin
 import xadmin
 from django.views.generic import TemplateView
 from users.views import IndexView, SystemView
-from users.views_user import LoginView
+from users.views_user import LoginView, LogoutView
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -28,5 +28,6 @@ urlpatterns = [
     url(r'^system/$', SystemView.as_view(), name='system'),
     url(r'^system/basic/', include('users.urls', namespace='system_basic')),
     url(r'^system/rbac/', include('rbac.urls', namespace='system_rbac')),
-    url(r'^login/', LoginView.as_view(), name='login'),
+    url(r'^login/$', LoginView.as_view(), name='login'),
+    url(r'^logout/$', LogoutView.as_view(), name='logout'),
 ]

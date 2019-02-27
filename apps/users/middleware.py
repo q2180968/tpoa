@@ -17,7 +17,8 @@ class MenuMiddleware(MiddlewareMixin):
                                                       'permissions__url',
                                                       'permissions__icon',
                                                       'permissions__code',
-                                                      'permissions__parent').distinct()
+                                                      'permissions__parent',
+                                                      'permissions__is_show').distinct()
             permission_url_list = []
             permission_menu_list = []
 
@@ -32,6 +33,7 @@ class MenuMiddleware(MiddlewareMixin):
                         'code': item['permissions__code'],
                         'parent': item['permissions__parent'],
                         'status': False,
+                        'is_show': item['permissions__is_show'],
                         'sub_menu': [],
 
                     }
@@ -44,7 +46,7 @@ class MenuMiddleware(MiddlewareMixin):
                 url = menu['url']
                 if url and re.match(url, request_url):
                     menu['status'] = True
-                if menu['parent'] is None:
+                if menu['parent'] is None and menu['is_show'] == True:
                     top_menu.insert(0, menu)
                 if menu['status'] == True:
                     if menu['parent']:
@@ -63,7 +65,7 @@ class MenuMiddleware(MiddlewareMixin):
             # 获取所有菜单数据
             menu_data = []
             for i in permission_menu_dict:
-                if permission_menu_dict[i]['parent']:
+                if permission_menu_dict[i]['parent'] and permission_menu_dict[i]['is_show'] == True:
                     pid = permission_menu_dict[i]['parent']
                     parent_menu = permission_menu_dict[pid]
                     parent_menu['sub_menu'].append(permission_menu_dict[i])
