@@ -16,10 +16,11 @@ class LoginForm(forms.Form):
 
 # 用户表单
 class UserForm(forms.Form):
-    username = forms.CharField(required=True, min_length=5)
+    user_name = forms.CharField(required=True, min_length=5)
     real_name = forms.CharField(required=True, min_length=5)
     email = forms.EmailField(required=True)
     password = forms.CharField(required=True, min_length=6)
     password2 = forms.CharField(required=True, min_length=6)
     mobile = forms.CharField(required=True, min_length=11)
     roles = forms.MultipleChoiceField()
+    posts = forms.MultipleChoiceField()

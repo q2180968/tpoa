@@ -93,8 +93,8 @@
                                                 </td>
                                                 <td class="sorting_1">{{ user.username }}</td>
                                                 <td>{{ user.user_name }}</td>
-                                                <td>{{ user.post.structure }}</td>
-                                                <td>{{ user.post.name }}</td>
+                                                <td>{% for post in user.post.all %}{{ post.structure }}，{% endfor %}</td>
+                                                <td>{% for post in user.post.all %}{{ post }}，{% endfor %}</td>
                                                 <td>{{ user.mobile }}</td>
                                                 <td>
                                                     <a href="{% url 'system_basic:user_add' %}?s_id={{ user.id }}"

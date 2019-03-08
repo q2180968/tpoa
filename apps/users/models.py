@@ -22,7 +22,7 @@ class UserProfile(AbstractUser):
 
     create_date = models.DateTimeField(default=datetime.now, verbose_name='创建时间')
     roles = models.ManyToManyField('rbac.Role', verbose_name='角色', blank=True)
-    post = models.ManyToManyField('Post', through='UserPost', verbose_name='职位')
+    post = models.ManyToManyField('Post', verbose_name='职位')
 
     class Meta:
         verbose_name = '用户信息'
@@ -62,11 +62,3 @@ class Post(models.Model):
 
     def __str__(self):
         return self.name
-
-
-class UserPost(models.Model):
-    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, verbose_name='用户')
-    post = models.ForeignKey(Post, on_delete=models.CASCADE, verbose_name='职位')
-
-    # 额外字段
-    is_primary = models.BooleanField(default=False, verbose_name='是否主职位')

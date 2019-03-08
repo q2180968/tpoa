@@ -1,0 +1,170 @@
+{% extends 'base.html' %}
+{% block title %}
+    高新区OA----新增用户
+{% endblock %}
+{% block css %}
+    <style type="text/css">
+        .errorlist {
+            color: red;
+        }
+
+    </style>
+    <!-- bootstrap datepicker -->
+    <link rel="stylesheet" href="/static/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
+
+{% endblock %}
+{% block map %}
+    <section class="content-header">
+        <h1>
+            系统管理
+            <small>用户管理</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="{% url 'index' %}"><i class="fa fa-dashboard"></i> 主页</a></li>
+            <li><a href="{% url 'system' %}">系统管理</a></li>
+            <li><a href="{% url 'system_basic:user' %}">用户管理</a></li>
+        </ol>
+    </section>
+{% endblock %}
+{% block content %}
+    <div class="pad no-print">
+        <div class="callout " style="margin-bottom: 0!important;">
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">用户新增</h3>
+                </div>
+                <!-- /.box-header -->
+                <!-- form start -->
+                <form id="form_submit" role="form" action="{% url 'system_rbac:menu_add' %}" method="post">
+                    {% csrf_token %}
+
+                    <div><strong class="errorlist">
+                        {% for key,value in m_form.errors.items %}{% ifequal key 'title' %}{{ value }}
+                        {% endifequal %}{% endfor %}{{ error_msg }}</strong>
+                    </div>
+                    <div class="box-body">
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">用户名</label>
+                            <input type="text" class="form-control" name="title" placeholder="输入用户名"
+                                   value="{{ m_form.title.value }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">真实姓名</label>
+                            <input type="text" class="form-control" name="title" placeholder="输入真实姓名"
+                                   value="{{ m_form.title.value }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">邮箱</label>
+                            <input type="text" class="form-control" name="title" placeholder="输入邮箱地址"
+                                   value="{{ m_form.title.value }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">密码</label>
+                            <input type="password" class="form-control" name="title" placeholder="输入密码"
+                                   value="{{ m_form.title.value }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">确认密码</label>
+                            <input type="password" class="form-control" name="title" placeholder="输入确认密码"
+                                   value="{{ m_form.title.value }}">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">电话</label>
+                            <input type="text" class="form-control" name="title" placeholder="输入电话"
+                                   value="{{ m_form.title.value }}">
+                        </div>
+                        <div class="form-group">
+                            <label>角色</label>
+                            <select name='parent' class="form-control select2 select2-hidden-accessible"
+                                    style="width: 100%;"
+                                    tabindex="-1" aria-hidden="true">
+                                <option selected="selected" value="">无</option>
+                                {% for role in role_list %}
+                                    <option
+                                            value="{{ role.id }}">{{ role.title }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label style="float: left;vertical-align: middle">部门:&nbsp;&nbsp;&nbsp;</label>
+                            <select id='structure' name='structure'
+                                    class="form-control select2 select2-hidden-accessible"
+                                    style="width: 200px;display:block;float: left;margin: 0 20px">
+                                <option selected="selected" value="">无</option>
+                                {% for structure in structure_list %}
+                                    <option
+                                            value="{{ structure.id }}">{{ structure.title }}</option>
+                                {% endfor %}
+                            </select>
+                            <label style="float: left;vertical-align: middle">职位:&nbsp;&nbsp;&nbsp;</label>
+                            <select id='structure' name='structure'
+                                    class="form-control select2 select2-hidden-accessible"
+                                    style="width: 200px;display: block;float: left;">
+                                <option selected="selected" value="">无</option>
+                            </select>
+                            <div id="add_post">增加职位</div>
+                        </div>
+                    </div>
+                    <!-- /.box-body -->
+
+                    <div class="box-footer">
+                        <button type="submit" class="btn btn-primary">提交</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block js %}
+    <!-- bootstrap datepicker -->
+    <script src="/static/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+    <script type="text/javascript">
+
+
+        $(function () {
+
+            $('#add_post').click(function () {
+                var html_parent = "<br/>" + $(this).parent().get(0).outerHTML
+                $(this).parent().after(html_parent)
+                $('#structure').each(function () {
+                    var id = $(this).val()
+                    $(this).change(function () {
+                        var id = $(this).val();
+                        $(this).next().next().html("<option value=''>请选择职位</option>")
+                        for (var index in post_list) {
+                            post = post_list[index]
+                            if (post.structure_id == id) {
+                                $(this).next().next().append("<option value='" + post.post_id + "'>" + post.post_title + "</option>")
+                            }
+                        }
+                    })
+                })
+            })
+
+            var post_list = []
+            {% for post in post_list %}
+                var post_item = '{"post_id":{{ post.id }},"post_title":"{{ post.name }}", "structure_id":{{ post.structure.id }}}'
+                var obj = JSON.parse(post_item)
+                post_list.push(obj)
+            {% endfor %}
+
+            //Date picker
+            $('#datepicker').datepicker({
+                autoclose: true
+            })
+
+
+            $('#structure').change(function () {
+                var id = $(this).val();
+                $(this).next().next().html("<option value=''>请选择职位</option>")
+                for (var index in post_list) {
+                    post = post_list[index]
+                    if (post.structure_id == id) {
+                        $(this).next().next().append("<option value='" + post.post_id + "'>" + post.post_title + "</option>")
+                    }
+                }
+            })
+        })
+    </script>
+{% endblock %}

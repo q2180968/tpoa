@@ -1,10 +1,13 @@
-from django.shortcuts import render, HttpResponseRedirect
+from django.shortcuts import render, HttpResponseRedirect, get_object_or_404
 from django.http import JsonResponse
 from django.views.generic.base import View
 from users.models import UserProfile
 from pure_pagination import Paginator, EmptyPage, PageNotAnInteger
-from users.forms import LoginForm
+from users.forms import LoginForm, UserForm
 from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth.hashers import make_password
+from rbac.models import Role
+from .models import Structure, Post
 
 
 # 登录验证
@@ -63,10 +66,50 @@ class UserView(View):
 
 class UserAdd(View):
     def get(self, request):
-        return render(request, 'users/user_add.html')
+        role_list = Role.objects.all()
+        structure_list = Structure.objects.all()
+        post_list = Post.objects.all()
+        role_list = Role.objects.all()
+        return render(request, 'users/user_add.html',
+                      {'role_list': role_list, 'structure_list': structure_list, 'post_list': post_list,
+                       'role_list': role_list})
 
     def post(self, request):
-        pass
+        post = request.POST
+        roles = request.POST.getlist('roles', [])
+        username = post.get('user_name', '')
+        password = post.get('password', '')
+        email = post.get('email', '')
+        real_name = post.get('real_name', '')
+        # password2 = post.get('password2', '')
+        posts = post.get('posts', '')
+        mobile = post.get('mobile', '')
+
+        user = UserProfile()
+        user.username = username
+        user.user_name = real_name
+        user.password = make_password(password)
+        user.email = email
+        user.mobile = mobile
+        user.save()
+        # 增加职位
+        for post_id in posts:
+            try:
+                post_id = int(post_id)
+            except:
+                continue
+            post = get_object_or_404(Post, pk=int(post_id))
+            user.post.add(post)
+
+        for role_id in roles:
+            try:
+                role_id = int(role_id)
+            except:
+                continue
+            role = get_object_or_404(Role, pk=int(role_id))
+            user.roles.add(role)
+
+        return HttpResponseRedirect('/system/basic/user/')
 
 
 class UserDelete(View):
